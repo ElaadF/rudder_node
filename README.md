@@ -1,3 +1,5 @@
 # rudder_node
 
-```python3 manage.py runserver```
+```bash
+python3 manage.py runserver
+```
