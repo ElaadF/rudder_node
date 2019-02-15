@@ -9,13 +9,17 @@ def index(request):
     return render(request, 'node_display/index.html', context)
 
 def get_accepted_node(request):
-    nodes = get_nodes(request.session['url'], request.session['token'])
-    print(nodes)
+    try:
+        nodes = get_nodes(request.session['url'], request.session['token'])
+    except:
+        return render(request, 'node_display/index.html', {"error" : error_message(request)})
     return render(request, 'node_display/index.html', {"nodes" : nodes, "navbar" : "accepted"})
 
 def get_pending_node(request):
-    nodes = get_nodes(request.session['url'], request.session['token'])
-    print(nodes)
+    try:
+        nodes = get_nodes(request.session['url'], request.session['token'])
+    except:
+        return render(request, 'node_display/index.html', {"error" : error_message(request)})
     return render(request, 'node_display/index.html', {"nodes" : nodes, "navbar" : "pending"})
 
 def get_nodes(url, token):
@@ -38,19 +42,21 @@ def get_nodes(url, token):
 
     return {"accepted_nodes" : accepted_nodes, "pending_nodes": pending_nodes}
 
+def error_message(request):
+    message = "Request have failed"
+    if request.session['url'] == "" and request.session['token'] == "":
+        message = "Empty URL and Token"
+    elif request.session['url'] == "":
+        message = "Empty URL"
+    elif request.session['token'] == "":
+        message = "Empty Token"
+    return message
+
 def get_all_node(request):
     try:
         nodes = get_nodes(request.session['url'], request.session['token'])
     except:
-        message = "Request have failed"
-        if request.session['url'] == "" and request.session['token'] == "":
-            message = "Empty URL and Token"
-        elif request.session['url'] == "":
-            message = "Empty URL"
-        elif request.session['token'] == "":
-            message = "Empty Token"
-        return render(request, 'node_display/index.html', {"error" : message})
-    # print(nodes)
+        return render(request, 'node_display/index.html', {"error" : error_message(request)})
     return render(request, 'node_display/index.html', {"nodes" : nodes, "navbar" : "all"})
 
 def server_info_submit(request):
@@ -70,10 +76,10 @@ def properties(request, hostname, id):
     json_node = json.loads(json_data.text)
 
     properties = {}
+
     for property_lst in json_node["data"]["nodes"]:
         for property in property_lst["properties"]:
             print(property)
             properties[property["name"]] = property["value"]
-        # print(property_lst["properties"])
-        # print("---------------------------------------------------------------------\n")
+
     return render(request, 'node_display/properties.html', {"properties" : properties, "hostname" : hostname, "id" : id})
