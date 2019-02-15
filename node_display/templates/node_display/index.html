@@ -1,0 +1,118 @@
+
+
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Forum - Free Bulma template</title>
+      {% load static %}
+      <link rel="stylesheet" href="{% static "node_display/card.css" %}">
+      <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+      <!-- Bulma Version 0.7.4-->
+      <link rel="stylesheet" href="https://unpkg.com/bulma@0.7.4/css/bulma.min.css" />
+      <link rel="stylesheet" type="text/css" href="../css/forum.css">
+      <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+   </head>
+   <body>
+      <section class="hero is-primary settings">
+         <div class="hero-body">
+         <div class="container has-text-centered">
+         <h1 class="title">
+            <a href="/">  Rudder Node </a>
+         </h1>
+         <h2 class="subtitle">
+            Rudder's node management utility
+         </h2>
+         <div class="field">
+            <div class="control">
+               <form action="/server/" method="POST">
+                  {% csrf_token %}
+                  <div class="columns">
+                     <div class="column">
+                        <input class="input is-primary" placeholder="Server's URL E.g : http://rudder.example.com/rudder/api/latest" id="url" type="text" name="url">
+                     </div>
+                     <div class="column">
+                        <input class="input is-primary" placeholder="API Token E.g : M4gGLmM4JCDAnjvH37LIs8Hya24WGYu4" type="text" name="token">
+                     </div>
+                  </div>
+                  <div class="has-text-centered">
+                     <input class="button is-centered" type="submit" value="Submit">
+                  </div>
+               </form>
+            </div>
+            <br><br>
+            <div class="tags has-addons is-centered">
+               <span class="tag">{{ request.session.url }}</span>
+               <span class="tag is-dark">{{ request.session.token }}</span>
+            </div>
+         </div>
+      </section>
+      <section>
+         <div class="tabs is-centered">
+            <ul>
+               <li  class="tab {% if navbar == 'all' %}is-active{% endif %}">
+                  <a href="/all">All</a>
+               </li>
+               <li  class="tab {% if navbar == 'accepted' %}is-active{% endif %}">
+                  <a href="/accepted">Accepted</a>
+               </li>
+               <li  class="tab {% if navbar == 'pending' %}is-active{% endif %}">
+                  <a href="/pending">Pending</a>
+               </li>
+            </ul>
+         </div>
+         {% if error %}
+         <div align="center">
+            <div class="notification is-danger">
+               <button class="delete"></button>
+               <h1 class="title">{{error}}<br></h1>
+               Retrieve nodes from server : "{{ request.session.url }}" and token : "{{ request.session.token }}" have failed. Please verify the informations
+            </div>
+         </div>
+         {% endif %}
+         <div class="columns is-multiline is_mobile">
+            {% if navbar != 'accepted'%}
+            {% for hostname, id  in nodes.pending_nodes.items %}
+            <div class="column">
+               <a href="/properties/{{ hostname }}/{{ id }}" class="cardtest is-centered">
+                  <article class="text">
+                     <span class="tag is-warning is-pulled-right">Pending</span>
+                     <p><b>{{ hostname }}</b></p>
+                     <p> {{ id }} </p>
+                  </article>
+               </a>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% if navbar != 'pending'%}
+            {% for hostname, id  in nodes.accepted_nodes.items %}
+            <div class="column">
+               <a href="/properties/{{ hostname }}/{{ id }}" class="cardtest is-centered">
+                  <article class="text">
+                     <span class="tag is-info is-pulled-right">Accepted</span>
+                     <p><b>{{ hostname }}</b></p>
+                     <p> {{ id }} </p>
+                  </article>
+               </a>
+            </div>
+            {% endfor %}
+            {% endif %}
+         </div>
+      </section>
+      <footer class="footer">
+         <div class="content has-text-centered">
+            <p>
+               <strong>Rudder's nodes utility</strong> by <a href="https://github.com/ElaadF">Elaad FURREEDAN</a>.<br>
+               2019
+            </p>
+         </div>
+      </footer>
+      <script>
+         $(document).on('submit', '#')
+      </script>
+   </body>
+</html>

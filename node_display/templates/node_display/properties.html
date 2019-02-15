@@ -1,0 +1,119 @@
+
+
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Forum - Free Bulma template</title>
+      {% load static %}
+      <link rel="stylesheet" href="{% static "node_display/card.css" %}">
+      <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+      <!-- Bulma Version 0.7.4-->
+      <link rel="stylesheet" href="https://unpkg.com/bulma@0.7.4/css/bulma.min.css" />
+      <link rel="stylesheet" type="text/css" href="../css/forum.css">
+      <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+   </head>
+   <body>
+      <section class="hero is-primary">
+         <div class="hero-body">
+         <div class="container has-text-centered">
+         <h1 class="title">
+            <a href="/">  Rudder Node </a>
+         </h1>
+         <h2 class="subtitle">
+            Rudder's node management utility
+         </h2>
+         <div class="field">
+            <div class="control">
+               <form action="/server/" method="POST">
+                  {% csrf_token %}
+                  <div class="columns">
+                     <div class="column">
+                        <input class="input is-primary" placeholder="Server's URL E.g : http://rudder.example.com/rudder/api/latest" id="url" type="text" name="url">
+                     </div>
+                     <div class="column">
+                        <input class="input is-primary" placeholder="API Token E.g : M4gGLmM4JCDAnjvH37LIs8Hya24WGYu4" type="text" name="token">
+                     </div>
+                  </div>
+                  <div class="has-text-centered">
+                     <input class="button is-centered" type="submit" value="Submit">
+                  </div>
+               </form>
+            </div>
+            <br><br>
+            <div class="tags has-addons is-centered">
+               <span class="tag">{{ request.session.url }}</span>
+               <span class="tag is-dark">{{ request.session.token }}</span>
+            </div>
+         </div>
+      </section>
+      <section>
+         <div align="center">
+            <h3 class="title">
+               Properties
+            </h3>
+            <div class="card">
+               <div class="card-content">
+                  <div class="media">
+                     <div class="media-content">
+                        <p class="title is-4">{{ hostname }}</p>
+                        <p class="subtitle is-6">{{ id }}</p>
+                     </div>
+                  </div>
+                  <div class="field has-addons"">
+                     <p class="control">
+                        <span class="select">
+                           <select>
+                              <option>String</option>
+                              <option>JSON</option>
+                           </select>
+                        </span>
+                     </p>
+                     <p class="control">
+                        <input class="input" type="text" placeholder="Value">
+                     </p>
+                     <p class="control">
+                        <a class="button is-primary">
+                        +
+                        </a>
+                     </p>
+                  </div>
+                  <div class="content">
+                     <div align="center">
+                        {% for name, value in properties.items %}
+                        <table class="table">
+                           <thead>
+                              <tr>
+                                 <th>Name</th>
+                                 <th>Value</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <tr>
+                                 <td>{{ name }}</td>
+                                 <td>{{ value }}</td>
+                              </tr>
+                           </tbody>
+                        </table>
+                        <!-- {{ name }} {{ value }} -->
+                        {% endfor %}
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <footer class="footer">
+         <div class="content has-text-centered">
+            <p>
+               <strong>Rudder's nodes utility</strong> by <a href="https://github.com/ElaadF">Elaad FURREEDAN</a>.<br>
+               2019
+            </p>
+         </div>
+      </footer>
+   </body>
+</html>
