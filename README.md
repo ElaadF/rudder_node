@@ -48,4 +48,4 @@ source <env's path>/bin/activate
 ```bash
 python3 manage.py runserver
 ```
-3. Acces locally : http://localhost/8000
+3. Acces locally : http://localhost:8000
